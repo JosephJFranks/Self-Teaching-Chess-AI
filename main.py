@@ -19,9 +19,12 @@ if __name__ == "__main__":
     chess_ai = ChessAI(model)
 
     # Train the model via self-play
-    num_episodes = 1000
+    num_episodes = 1
     for episode in range(num_episodes):
-        game_data, outcome = chess_ai.self_play()
-        # Training logic here
+        game_data = chess_ai.self_play()
+
+        # Train both White and Black with their respective data
+        chess_ai.train_model(data=game_data[0], model=chess_ai.model, optimiser=chess_ai.optimiser, debug=True)
+        chess_ai.train_model(data=game_data[1], model=chess_ai.model, optimiser=chess_ai.optimiser)
     
     writer.close()

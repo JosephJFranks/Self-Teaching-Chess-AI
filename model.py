@@ -6,8 +6,8 @@ class ChessCNN(nn.Module):
         super(ChessCNN, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=6, out_channels=32, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1)
-        self.fc1 = nn.Linear(64 * 8 * 8, 128)
-        self.fc2 = nn.Linear(128, number_of_legal_moves)  # Adjust output layer size
+        self.fc1 = nn.Linear(64 * 8 * 8, 128)  # Adjusted input size for the fully connected layer
+        self.fc2 = nn.Linear(128, number_of_legal_moves)  # Output layer
         self.relu = nn.ReLU()
         self.log_softmax = nn.LogSoftmax(dim=1)
 
@@ -19,4 +19,5 @@ class ChessCNN(nn.Module):
         x = x.view(x.size(0), -1)  # Flatten
         x = self.fc1(x)
         x = self.relu(x)
-        return self.log_softmax(self.fc2(x))  # Output probabilities for each move
+        return torch.softmax(self.fc2(x), dim=1)  # Output probabilities for each move
+
