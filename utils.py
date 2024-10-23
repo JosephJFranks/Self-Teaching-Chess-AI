@@ -1,7 +1,7 @@
 import chess
 import torch
 
-def convert_board_to_tensor(board):
+def convert_board_to_tensor(board,training = False):
     # Initialize a tensor of shape (6, 8, 8) filled with zeros
     tensor = torch.zeros((6, 8, 8), dtype=torch.float32)
 
@@ -23,7 +23,7 @@ def convert_board_to_tensor(board):
             tensor[piece.piece_type - 1, square // 8, square % 8] = color
 
     # Check whose turn it is and adjust the tensor if it's Black's turn
-    if not board.turn:  # It's Black's turn
+    if not board.turn and not training:  # It's Black's turn
         tensor = tensor.flip(1).flip(2)  # Rotate 180 degrees
         tensor = tensor * -1  # Multiply by -1
 
@@ -88,3 +88,25 @@ def check_winner(board):
         return "It's a draw due to fivefold repetition!"
     else:
         return "The game is still ongoing."
+    
+
+                
+
+
+def list_saved_models(directory):
+    try:
+        # List all files in the directory
+        files = os.getcwd()
+        
+        # Filter for model files (you can adjust the extension based on your framework)
+        model_files = [f for f in files if f.endswith('.pt') or f.endswith('.h5')]
+        
+        if model_files:
+            print("Saved Models:")
+            for model in model_files:
+                print(model)
+        else:
+            print("No model files found.")
+    
+    except FileNotFoundError:
+        print("The specified directory does not exist.")

@@ -1,4 +1,5 @@
 import chess
+import chess.svg
 import torch
 import torch.optim as optim
 from model import ChessCNN
@@ -37,12 +38,12 @@ class ChessAI:
         
 
         # Sample a move using the masked probabilities
-        move = self.sample_move(masked_move_probs, board, legal_moves_mask)
+        move, valid = self.sample_move(masked_move_probs, board, legal_moves_mask)
         if debug:
             print("Final Selected move: ", move)
             print("----------------")
 
-        return move
+        return move, valid
 
     def get_legal_moves_mask(self, board):
         # Initialize a mask of zeros for all 4096 possible moves
@@ -72,14 +73,18 @@ class ChessAI:
         move = convert_index_to_move(move_index)
         
         if move in board.legal_moves:
-            print("Valid move made")
+            valid = True
+            if debug:
+                print("Valid move made")
         else:
-            print(f"Invalid move sampled: {move}")
+            valid = False
+            if debug:
+                print(f"Invalid move sampled: {move}")
 
-        return move
+        return move, valid
 
 
-    def self_play(self):
+    def self_play(self, debug=False):
         board = chess.Board()  # Start a new game
 
         white_states = []
@@ -91,13 +96,27 @@ class ChessAI:
             state = board.copy()
 
             if board.turn == chess.WHITE:
-                move = self.choose_move(board)  # White's turn
+                move, valid = self.choose_move(board)  # White's turn
                 white_states.append(state)  # Store White's state
                 white_actions.append(move)  # Store White's action
             else:
-                move = self.choose_move(board)  # Black's turn
+                move, valid = self.choose_move(board)  # Black's turn
                 black_states.append(state)  # Store Black's state
                 black_actions.append(move)  # Store Black's action
+            
+            if not valid:
+                if board.piece_at(move.from_square).piece_type == chess.PAWN and chess.square_rank(move.to_square) in [0, 7]:
+                    move = chess.Move(move.from_square, move.to_square, promotion=chess.QUEEN)
+                    if debug:
+                        print('Invalidity dealt with')
+                    elif debug:
+                        print('There is another error')
+                else:
+                    print('Problem move chosen, ', move)
+                    board_svg = chess.svg.board(board)
+                    with open("chess_board.svg", "w") as f:
+                        f.write(board_svg)
+                    print(state)
 
             board.push(move)  # Apply the move
 
@@ -120,7 +139,7 @@ class ChessAI:
 
         return [white_data, black_data]
 
-    def train_model(self, data, model, optimiser, debug=False):
+    def train_model(self, data, model, optimiser, factor = 1, debug = False):
         states = data[0]
         actions = data[1]
         rewards = data[2]
@@ -135,16 +154,24 @@ class ChessAI:
             print(rewards)
 
         model.train()
+        
+        total_loss = 0
 
         optimiser.zero_grad()
         for i in range(len(states)):
-            input_tensor = convert_board_to_tensor(states[i])
-            input_tensor = input_tensor.unsqueeze(0)
-            logits = model(input_tensor)
+            input_tensor = convert_board_to_tensor(states[i],training=True) * factor
+            if factor == -1:
+                input_tensor = input_tensor.flip(1).flip(2)
+            logits_input_tensor = input_tensor.unsqueeze(0)
+            logits = model(logits_input_tensor)
             action_index = torch.tensor([convert_move_to_index(actions[i])])
             loss = self.compute_loss(logits, action_index, rewards[i])
             loss.backward()
+
+            total_loss += loss.item()
         optimiser.step()
+
+        return total_loss
 
     def compute_loss(self, logits, actions, rewards):
         criterion = torch.nn.CrossEntropyLoss()
