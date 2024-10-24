@@ -1,5 +1,6 @@
 import chess
 import torch
+import os
 
 def convert_board_to_tensor(board,training = False):
     # Initialize a tensor of shape (6, 8, 8) filled with zeros
@@ -29,20 +30,28 @@ def convert_board_to_tensor(board,training = False):
 
     return tensor
 
-def convert_move_to_index(move):
+def convert_move_to_index(move, whites_turn = True):
         # Each move is represented by the from_square and to_square
         from_square = move.from_square  # Integer from 0 to 63
         to_square = move.to_square      # Integer from 0 to 63
+
+        if not whites_turn:
+            from_square = 63 - from_square
+            to_square = 63 - to_square
         
         # Convert the move into a 64x64 flattened index
         move_index = from_square * 64 + to_square
         
         return move_index
 
-def convert_index_to_move(index):
+def convert_index_to_move(index, board):
         # From the index, recover the from_square and to_square
         from_square = index // 64
         to_square = index % 64
+        
+        if not board.turn:
+            from_square = 63 - from_square
+            to_square = 63 - to_square
         
         # Create and return a chess.Move object
         move = chess.Move(from_square, to_square)
@@ -60,18 +69,6 @@ def mask_to_legal_moves(mask):
 
     return legal_moves
 
-def print_non_zero_probabilities(move_probs):
-    # Get the move probabilities as a numpy array
-    useable = move_probs.numpy()
-    print(useable[useable!=0])
-
-    listed_move_probs = move_probs.detach().cpu().numpy().flatten()
-
-    print("Moves with non-zero probabilities:")
-    for index, prob in enumerate(listed_move_probs):
-        if prob != 0:  # Check if probability is non-zero
-            print(f"Move: {convert_index_to_move(index)}, Probability: {prob:.4f}")
-
 def check_winner(board):
     if board.is_checkmate():
         if board.turn:  # True if it's white's turn
@@ -88,10 +85,18 @@ def check_winner(board):
         return "It's a draw due to fivefold repetition!"
     else:
         return "The game is still ongoing."
-    
 
-                
+def print_non_zero_probabilities(move_probs):
+    # Get the move probabilities as a numpy array
+    useable = move_probs.numpy()
+    print(useable[useable!=0])
 
+    listed_move_probs = move_probs.detach().cpu().numpy().flatten()
+
+    print("Moves with non-zero probabilities:")
+    for index, prob in enumerate(listed_move_probs):
+        if prob != 0:  # Check if probability is non-zero
+            print(f"Move: {convert_index_to_move(index)}, Probability: {prob:.4f}")
 
 def list_saved_models(directory):
     try:
