@@ -76,6 +76,7 @@ class ChessAI:
 
         with torch.no_grad():
             move_probs = self.model(input_tensor)  # For black will once trained, give moves that need to be flipped back
+
             if debug:
                 print("Model output shape:", move_probs.shape)
 

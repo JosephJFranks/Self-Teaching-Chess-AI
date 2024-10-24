@@ -1,0 +1,31 @@
+[Event "Self-Play"]
+[Site "Local"]
+[Date "2024.10.24"]
+[Round "1"]
+[White "Chess AI (White)"]
+[Black "Chess AI (Black)"]
+[Result "*"]
+
+1. g3 Nh6 2. Nf3 b6 3. b4 c6 4. Bb2 Rg8 5. c4 c5 6. Qc1 Qc7 7. a4 Ng4 8. Be5
+Qxe5 9. bxc5 Qf5 10. Ra3 Qxf3 11. h3 Nh6 12. Kd1 e5 13. Rxf3 Kd8 14. c6 Ke7 15.
+Ke1 e4 16. Na3 g5 17. Re3 Rh8 18. cxd7 Nf5 19. d8 Ke6 20. Rc3 Nd7 21. Rb3 f6
+22. Re3 h6 23. dxb6 Nd6 24. Rh2 Kf7 25. Nc2 g4 26. Na1 Nxc4 27. hxg4 Nde5 28.
+Bg2 Bxg4 29. a5 h5 30. b5 Nxd2 31. Rh3 Nb3 32. a5 h4 33. Rxh4 Ke6 34. Kd1 Rh6
+35. Bh3 Rb8 36. a6 Bd6 37. Qc4+ Kf5 38. axd6 Nxa5 39. d5 Naxc4 40. Ke1 Ra8 41.
+c6 Nxc6 42. Bg2 Rd8 43. Nb3 Nb6 44. Rxg4 Rf8 45. Rgxe4 Na5 46. Rc3 Na4 47. Rc6
+Rh3 48. Nd4+ Kg5 49. Rxf6 Rh6 50. Bf3 Rh4 51. Rxh4 a6 52. e3 Kxf6 53. Bb7 Nb6
+54. Ne6 Nd5 55. Bxd5 Rb8 56. Nc7 Rb6 57. Rd4 Re6 58. Rf4+ Kg5 59. Rf7 Kh5 60.
+Ke2 Nc4 61. g4+ Kh6 62. f3 Re8 63. Bxc4 Rf8 64. Ne6 Ra8 65. Ng5 Re8 66. Rh7+
+Kxg5 67. Kd1 Rxe3 68. Bf7 Re2 69. Bg8 a5 70. Rh6 a4 71. Rh1 Re1+ 72. Rxe1 Kf4
+73. Bb3 Kg5 74. Re6 Kh4 75. Re8 axb3 76. Rg8 b2 77. Ke1 Kg3 78. Ra8 Kxf3 79.
+Kf1 Ke3 80. Kg2 b1 81. Kh3 Kf4 82. Rb8 b2 83. Rh8 b4 84. Kh4 b6 85. Rg8 a6 86.
+Rh8 a4 87. Rh7 b4 88. Rh5 b5 89. Re5 c6 90. Rc5 e6 91. Rg5 f6 92. Kh5 e6 93.
+Rg7 g6+ 94. Kh4 Ke4 95. Rc7 Ke3 96. Ra7 b6 97. Rc7 b3 98. Ra7 Kf4 99. Rg7 d5
+100. Rd7 h5 101. Kxh5 Ke3 102. Re7+ Kf2 103. Rf7+ Ke2 104. Rf4 Kd3 105. Rc4 Kd2
+106. Rc3 Ke2 107. Rc7 Kd2 108. Ra7 Kc2 109. Rf7 Kb2 110. Re7 Ka1 111. Re2 Kb1
+112. Kh6 Kc1 113. g5 Kb1 114. Rb2+ Kxb2 115. Kg6 Ka3 116. Kg7 Ka4 117. Kf6 Kb4
+118. Ke7 Kc3 119. Kf7 Kb4 120. g6 Kb5 121. Kf8 Ka5 122. Ke8 Kb5 123. Kd7 Kb6
+124. g7 Kc5 125. g8 Kb6 126. Ke7 Ka6 127. g1 Ka5 128. Ke8 Ka4 129. g2 Ka3 130.
+g8 Ka4 131. Kf7 Kb3 132. Kg6 Kc3 133. Kh5 Kc2 134. g1 Kc3 135. b6 Kc4 136. b1
+Kd5 137. b7 Kc4 138. Kg5 Kc3 139. h1 Kd2 140. c1+ Kxc1 *
+

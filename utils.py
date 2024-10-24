@@ -104,7 +104,7 @@ def list_saved_models(directory):
         files = os.getcwd()
         
         # Filter for model files (you can adjust the extension based on your framework)
-        model_files = [f for f in files if f.endswith('.pt') or f.endswith('.h5')]
+        model_files = [f for f in os.listdir(directory) if f.endswith('.pt') or f.endswith('.pth')]
         
         if model_files:
             print("Saved Models:")
@@ -115,3 +115,35 @@ def list_saved_models(directory):
     
     except FileNotFoundError:
         print("The specified directory does not exist.")
+
+import chess.pgn
+
+def save_game_to_pgn(game_moves, file_name="game.pgn"):
+    # Create a PGN game
+    game = chess.pgn.Game()
+
+    # Set headers for PGN (optional, you can add player names, etc.)
+    game.headers["Event"] = "Self-Play"
+    game.headers["Site"] = "Local"
+    game.headers["Date"] = "2024.10.24"
+    game.headers["Round"] = "1"
+    game.headers["White"] = "Chess AI (White)"
+    game.headers["Black"] = "Chess AI (Black)"
+
+    # Create a board
+    board = chess.Board()
+
+    # Add all the moves to the game
+    node = game
+    for move in game_moves:
+        if isinstance(move, str):  # If the move is in UCI format, convert to chess.Move
+            move = chess.Move.from_uci(move)
+        node = node.add_variation(move)
+        board.push(move)
+
+    # Write the PGN to a file
+    with open(file_name, "w") as pgn_file:
+        exporter = chess.pgn.FileExporter(pgn_file)
+        game.accept(exporter)
+
+    print(f"Game saved to {file_name}")

@@ -9,7 +9,7 @@ class ChessCNN(nn.Module):
         self.fc1 = nn.Linear(64 * 8 * 8, 128)  # Adjusted input size for the fully connected layer
         self.fc2 = nn.Linear(128, number_of_legal_moves)  # Output layer
         self.relu = nn.ReLU()
-        self.log_softmax = nn.LogSoftmax(dim=1)
+        self.log_softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         x = self.conv1(x)
